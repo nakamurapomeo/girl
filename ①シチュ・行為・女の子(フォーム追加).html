@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>シチュ・行為・女の子</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            position: relative;
+        }
+
+        #loadData {
+            position: fixed; /* 固定位置にする */
+            right: 20px; /* 右端から10pxの位置 */
+            bottom: 350px; /* 下端から10pxの位置 */
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px 30px; /* ボタンの大きさを調整 */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #loadData:hover {
+            background-color: #45a049;
+        }
+
+        .data {
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+		        
+				iframe {
+            width: 640px;
+            height: 480px;
+            border: none;
+            margin-height: 0;
+            margin-width: 0;
+        }
+
+        @media (max-width: 640px) {
+            iframe {
+                width: 100%;
+                height: 430px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>シチュ・行為・女の子</h1>
+    <button id="loadData">データを表示</button>
+    <p class="data" id="data1"></p>
+    <p class="data" id="data2"></p>
+    <p class="data" id="data3"></p>
+
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSega9PcpQwPZlc2XqSGr40WN6Uj_RVKg0Ca8iGhRpsK4WvdJQ/viewform?embedded=true" frameborder="0" marginheight="0" marginwidth="0">読み込んでいます…</iframe>
+
+
+    <script>
+        let clickCount = 0;
+
+        function getRandomLineFromCSV(csvFilePath) {
+            return fetch(csvFilePath)
+                .then(response => response.text())
+                .then(data => {
+                    const lines = data.trim().split('\n');
+                    const randomIndex = Math.floor(Math.random() * lines.length);
+                    return lines[randomIndex];
+                });
+        }
+
+        document.getElementById('loadData').addEventListener('click', function() {
+            clickCount++;
+
+            switch(clickCount) {
+                case 1:
+                    getRandomLineFromCSV('シチュ.csv')
+                        .then(line => document.getElementById('data1').textContent = line)
+                        .catch(error => console.error('エラー:', error));
+                    break;
+                case 2:
+                    getRandomLineFromCSV('行為.csv')
+                        .then(line => document.getElementById('data2').textContent = line)
+                        .catch(error => console.error('エラー:', error));
+                    break;
+                case 3:
+                    getRandomLineFromCSV('女の子.csv')
+                        .then(line => document.getElementById('data3').textContent = line)
+                        .catch(error => console.error('エラー:', error));
+                    break;
+                case 4:
+                    document.getElementById('data1').textContent = '';
+                    document.getElementById('data2').textContent = '';
+                    document.getElementById('data3').textContent = '';
+                    clickCount = 0;
+                    break;
+            }
+        });
+    </script>
+</body>
+</html>
